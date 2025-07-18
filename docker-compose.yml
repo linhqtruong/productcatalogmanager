@@ -1,0 +1,40 @@
+services:
+  db:
+    image: postgres:15
+    container_name: productcatalog-db
+    environment:
+      POSTGRES_DB: productcatalog
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - db_data:/var/lib/postgresql/data
+      - ./data:/data:ro
+
+  backend:
+    build: ./backend
+    container_name: productcatalog-backend
+    depends_on:
+      - db
+    environment:
+      SPRING_DATASOURCE_URL: jdbc:postgresql://db:5432/productcatalog
+      SPRING_DATASOURCE_USERNAME: postgres
+      SPRING_DATASOURCE_PASSWORD: postgres
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./data:/data:ro
+    working_dir: /app
+    command: ["java", "-jar", "target/backend-0.0.1-SNAPSHOT.jar"]
+
+  frontend:
+    build: ./frontend
+    container_name: productcatalog-frontend
+    ports:
+      - "3000:80"
+    depends_on:
+      - backend
+
+volumes:
+  db_data: 
