@@ -562,7 +562,7 @@ docker-compose logs -f backend
 For support and questions:
 - **Documentation**: Check the API documentation at http://localhost:8080/swagger-ui.html
 - **Issues**: Create an issue in the repository
-- **Email**: support@enterbridge.com
+- **Email**: linh@alumni.harvard.edu
 
 ---
 
