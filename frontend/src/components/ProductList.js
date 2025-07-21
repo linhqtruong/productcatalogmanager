@@ -162,6 +162,20 @@ function ProductList() {
     setSnackbar({ ...snackbar, open: false });
   };
 
+  // Sort products based on current sort field and direction
+  const sortedProducts = [...products].sort((a, b) => {
+    const aValue = getFieldValue(a, sortField);
+    const bValue = getFieldValue(b, sortField);
+    
+    if (typeof aValue === 'string' && typeof bValue === 'string') {
+      return sortDirection === 'asc' 
+        ? aValue.localeCompare(bValue)
+        : bValue.localeCompare(aValue);
+    } else {
+      return sortDirection === 'asc' ? aValue - bValue : bValue - aValue;
+    }
+  });
+
   if (loading) {
     return (
       <Box>
@@ -407,7 +421,7 @@ function ProductList() {
             </TableRow>
           </TableHead>
           <TableBody>
-            {products.map((product) => (
+            {sortedProducts.map((product) => (
               <TableRow key={product.productKey || product.product_key}>
                 <TableCell>{product.productKey || product.product_key}</TableCell>
                 <TableCell>{product.productName || product.product_name}</TableCell>
